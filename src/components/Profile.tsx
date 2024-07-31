@@ -9,7 +9,7 @@ const Profile = ({ user, onEdit }: ProfileDisplayProps) => (
   <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
     <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
       <img
-        src={user.profilePicture}
+        src={user?.profilePicture ? user?.profilePicture : "/profile.png"}
         alt="Profile"
         className="w-32 h-32 rounded-full mx-auto mb-4"
       />

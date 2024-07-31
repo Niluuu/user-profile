@@ -5,7 +5,7 @@ const user = {
   name: "John Doe",
   email: "john@example.com",
   bio: "Software developer",
-  profilePicture: "https://example.com/profile.jpg",
+  profilePicture: null,
 };
 
 export const handlers = [

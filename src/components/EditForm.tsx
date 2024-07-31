@@ -9,6 +9,7 @@ interface EditProfileFormProps {
 
 const EditProfileForm = ({ user, onSave, onCancel }: EditProfileFormProps) => {
   const [formData, setFormData] = useState(user);
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,8 +26,21 @@ const EditProfileForm = ({ user, onSave, onCancel }: EditProfileFormProps) => {
   };
 
   const validateForm = () => {
-    // Todo: validation logic here
-    return true;
+    const newErrors: { name?: string; email?: string } = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -41,10 +55,14 @@ const EditProfileForm = ({ user, onSave, onCancel }: EditProfileFormProps) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
-            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+            className={`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 ${
+              errors.name ? "border-red-500" : ""
+            }`}
             placeholder="Name"
           />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-2">{errors.name}</p>
+          )}
         </div>
         <div className="mb-4">
           <input
@@ -52,10 +70,14 @@ const EditProfileForm = ({ user, onSave, onCancel }: EditProfileFormProps) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
-            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+            className={`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 ${
+              errors.email ? "border-red-500" : ""
+            }`}
             placeholder="Email"
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-2">{errors.email}</p>
+          )}
         </div>
         <div className="mb-6">
           <textarea
